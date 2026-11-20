@@ -1,11 +1,9 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "folder-marker",
+	"name": "Folder Marker",
 	"version": "1.0.0",
 	"minAppVersion": "1.0.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Adds a small colored mark to the left of folder names in the file explorer, like section tabs in OneNote.",
+	"author": "Duarte Oliveira",
 	"isDesktopOnly": false
 }

@@ -1,8 +1,105 @@
-/*
+/* Chip plus a small caret on every folder: the chip carries
+   the color, the caret (6px, moved after the chip) shows open or closed.
+   The chip lives on the folder title row (a flex container), not inside the
+   name element, so the text cursor while renaming stays to the right of it. */
+.nav-folder-title.folder-chips-level1::before,
+.nav-folder-title.folder-chips-level2::before {
+	content: '';
+	order: 0;
+	flex: 0 0 auto;
+	align-self: center;
+	box-sizing: content-box;
+	margin-right: 5px;
+	border: 1px solid var(--background-modifier-border);
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.nav-folder-title.folder-chips-level1 > .collapse-icon,
+.nav-folder-title.folder-chips-level2 > .collapse-icon {
+	order: 1;
+	position: static;
+	flex: 0 0 auto;
+	width: 6px;
+	height: 6px;
+	margin: 0 4px 0 0;
+	padding: 0;
+}
 
-If your plugin does not need CSS, delete this file.
+.nav-folder-title.folder-chips-level1 > .collapse-icon svg,
+.nav-folder-title.folder-chips-level2 > .collapse-icon svg {
+	width: 6px;
+	height: 6px;
+}
 
-*/
+.nav-folder-title.folder-chips-level1 > .nav-folder-title-content,
+.nav-folder-title.folder-chips-level2 > .nav-folder-title-content {
+	order: 2;
+}
+
+/* Level 1 */
+.nav-folder-title.folder-chips-level1::before {
+	width: 4px;
+	height: calc(1.1em + 2px);
+	border-radius: 4px 0 0 4px;
+	background-color: var(--folder-chips-level1, #ffffff);
+}
+
+/* Level 2 and deeper: smaller and lighter, in the top-level folder's color. */
+.nav-folder-title.folder-chips-level2::before {
+	width: 3px;
+	height: calc((1.1em + 2px) * 0.6);
+	border-radius: 3px 0 0 3px;
+	background-color: color-mix(in srgb, var(--folder-chips-level2) 65%, white);
+}
+
+/* Notes: the mark chosen in the settings, to the left of the name. */
+.nav-file-title.folder-chips-file-bullet::before,
+.nav-file-title.folder-chips-file-underscore::before {
+	content: '\2022';
+	flex: 0 0 auto;
+	align-self: center;
+	margin-right: 6px;
+	color: var(--text-faint);
+	line-height: 1;
+}
+
+.nav-file-title.folder-chips-file-underscore::before {
+	content: '_';
+}
+
+/* Small document icon: black, or white in the dark theme. */
+.nav-file-title.folder-chips-file-icon::before {
+	content: '';
+	flex: 0 0 auto;
+	align-self: center;
+	width: 12px;
+	height: 12px;
+	margin-right: 6px;
+	background-color: #000000;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z'/%3E%3Cpath d='M14 2v4a2 2 0 0 0 2 2h4'/%3E%3Cpath d='M10 9H8'/%3E%3Cpath d='M16 13H8'/%3E%3Cpath d='M16 17H8'/%3E%3C/svg%3E") center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z'/%3E%3Cpath d='M14 2v4a2 2 0 0 0 2 2h4'/%3E%3Cpath d='M10 9H8'/%3E%3Cpath d='M16 13H8'/%3E%3Cpath d='M16 17H8'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.theme-dark .nav-file-title.folder-chips-file-icon::before {
+	background-color: #ffffff;
+}
+
+/* Open folders: bold name. */
+.nav-folder:not(.is-collapsed) > .nav-folder-title > .nav-folder-title-content {
+	font-weight: var(--font-bold, 700);
+}
+
+/* Keep the color picker on the right of the label, even in a narrow settings
+   panel where Obsidian stacks setting rows and stretches their controls. */
+.vertical-tab-content .setting-item.folder-chips-setting {
+	flex-direction: row;
+	align-items: center;
+}
+
+.vertical-tab-content .setting-item.folder-chips-setting .setting-item-control {
+	width: auto;
+	flex-shrink: 0;
+}
+
+.vertical-tab-content .setting-item.folder-chips-setting input[type='color'] {
+	width: auto;
+}
