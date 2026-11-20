@@ -1,4 +1,4 @@
-import { App, PluginSettingTab, Setting } from 'obsidian';
+import { App, PluginSettingTab, SettingDefinitionItem } from 'obsidian';
 import FolderMarkerPlugin from './main';
 
 export type NoteMark = 'none' | 'icon' | 'bullet' | 'underscore';
@@ -29,66 +29,63 @@ export class FolderMarkerSettingTab extends PluginSettingTab {
 		this.plugin = plugin;
 	}
 
-	display(): void {
-		const { containerEl } = this;
+	getSettingDefinitions(): SettingDefinitionItem[] {
+		return [
+			{
+				name: 'First folder color',
+				desc: 'Color of the chip on the first folder. The other first-level folders get automatic colors derived from it.',
+				control: { type: 'color', key: 'chipColorLevel1' },
+			},
+			{
+				name: 'Note mark',
+				desc: 'Mark shown to the left of note names.',
+				control: {
+					type: 'dropdown',
+					key: 'noteMark',
+					options: {
+						none: 'No mark',
+						icon: 'Icon',
+						bullet: 'Bullet',
+						underscore: 'Underscore',
+					},
+				},
+			},
+			{
+				name: 'Auto reveal note',
+				desc: 'Reveal the open note in the file explorer, expanding its folders.',
+				control: { type: 'toggle', key: 'autoReveal' },
+			},
+			{
+				name: 'Auto close folders',
+				desc: 'When you open a first-level folder, close the other first-level folders.',
+				control: { type: 'toggle', key: 'autoCloseFolders' },
+			},
+		];
+	}
 
-		containerEl.empty();
-
-		new Setting(containerEl)
-			.setClass('folder-chips-setting')
-			.setName('First folder color')
-			.setDesc('Color of the chip on the first folder. The other first-level folders get automatic colors derived from it.')
-			.addColorPicker((color) =>
-				color
-					.setValue(this.plugin.settings.chipColorLevel1)
-					.onChange((value) => {
-						this.plugin.settings.chipColorLevel1 = value;
-						this.plugin.chips.setColor(value);
-						this.plugin.saveSettingsDebounced();
-					}),
-			);
-
-		new Setting(containerEl)
-			.setName('Note mark')
-			.setDesc('Mark shown to the left of note names.')
-			.addDropdown((dropdown) =>
-				dropdown
-					.addOption('none', 'No mark')
-					.addOption('icon', 'Icon')
-					.addOption('bullet', 'Bullet')
-					.addOption('underscore', 'Underscore')
-					.setValue(this.plugin.settings.noteMark)
-					.onChange((value) => {
-						const mark = value as NoteMark;
-						this.plugin.settings.noteMark = mark;
-						this.plugin.chips.setNoteMark(mark);
-						this.plugin.saveSettingsDebounced();
-					}),
-			);
-
-		new Setting(containerEl)
-			.setName('Auto reveal note')
-			.setDesc('Reveal the open note in the file explorer, expanding its folders.')
-			.addToggle((toggle) =>
-				toggle
-					.setValue(this.plugin.settings.autoReveal)
-					.onChange((value) => {
-						this.plugin.settings.autoReveal = value;
-						if (value) this.plugin.autoReveal.revealActive();
-						this.plugin.saveSettingsDebounced();
-					}),
-			);
-
-		new Setting(containerEl)
-			.setName('Auto close folders')
-			.setDesc('When you open a first-level folder, close the other first-level folders.')
-			.addToggle((toggle) =>
-				toggle
-					.setValue(this.plugin.settings.autoCloseFolders)
-					.onChange((value) => {
-						this.plugin.settings.autoCloseFolders = value;
-						this.plugin.saveSettingsDebounced();
-					}),
-			);
+	setControlValue(key: string, value: unknown): void {
+		const settings = this.plugin.settings;
+		switch (key) {
+			case 'chipColorLevel1':
+				if (typeof value !== 'string' || !HEX_COLOR.test(value)) return;
+				settings.chipColorLevel1 = value;
+				this.plugin.chips.setColor(value);
+				break;
+			case 'noteMark':
+				if (!NOTE_MARKS.includes(value as NoteMark)) return;
+				settings.noteMark = value as NoteMark;
+				this.plugin.chips.setNoteMark(settings.noteMark);
+				break;
+			case 'autoReveal':
+				settings.autoReveal = value === true;
+				if (settings.autoReveal) this.plugin.autoReveal.revealActive();
+				break;
+			case 'autoCloseFolders':
+				settings.autoCloseFolders = value === true;
+				break;
+			default:
+				return;
+		}
+		this.plugin.saveSettingsDebounced();
 	}
 }
