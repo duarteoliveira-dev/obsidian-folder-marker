@@ -26,15 +26,6 @@ Go to **Settings → Folder Marker** to set the first folder color, the note mar
 2. Copy them to `<Vault>/.obsidian/plugins/folder-marker/`.
 3. Reload Obsidian and enable the plugin in **Settings → Community plugins**.
 
-## Development
-
-```bash
-npm install
-npm run dev     # watch
-npm run build   # production build
-npm run lint
-```
-
 ## Privacy
 
 The plugin works fully offline. It makes no network requests and collects no data.
