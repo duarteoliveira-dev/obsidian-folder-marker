@@ -1,7 +1,7 @@
 {
 	"id": "folder-marker",
 	"name": "Folder Marker",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"minAppVersion": "1.13.0",
 	"description": "Adds a small colored mark to the left of folder names in the file explorer, like section tabs in OneNote.",
 	"author": "Duarte Oliveira",

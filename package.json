@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-folder-marker",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Adds a small colored mark to the left of folder names in the Obsidian file explorer.",
 	"main": "main.js",
 	"type": "module",
