@@ -33,6 +33,18 @@
 .nav-folder-title.folder-chips-level1 > .nav-folder-title-content,
 .nav-folder-title.folder-chips-level2 > .nav-folder-title-content {
 	order: 2;
+	flex: 1 1 auto;
+	margin-left: 0;
+	text-align: left;
+}
+
+/* Some themes right-align or space out folder rows; keep chip, caret and name together on the left. */
+.nav-folder-title.folder-chips-level1,
+.nav-folder-title.folder-chips-level2 {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	text-align: left;
 }
 
 /* Level 1 */
